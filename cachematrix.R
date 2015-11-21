@@ -1,15 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+## These two functions solve a matrix and cache the inverse to be 
+## retrieved later rather than calculated over again
 
-## Write a short comment describing this function
+## This function returns a list of helper functions to set the value
+## of a matrix, get its value, set the value of the inverse, and get
+## the value of the inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+	inv <- NULL
+	setMatrix <- function(y){
+		x <<- y
+		inv <<- NULL
+	}
+	getMatrix <- function() x
+	setInverse <- function(inverse) inv <<- inverse
+	getInverse <- function() inv
+	list(setMatrix = setMatrix, getMatrix = getMatrix, 
+		setInverse = setInverse, getInverse = getInverse)
 }
 
 
-## Write a short comment describing this function
+## This function checks whether a matrix has already been solved.
+## If so, it returns the value of the inverse.  If not, it solves the
+## matrix and caches the value for later retrieval.
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        inv <- x$getInverse()
+        if(!is.null(inv)){
+        	message("getting cached data")
+        	return(inv)
+        }
+        data <- x$getMatrix()
+        inv <- solve(x, ...)
+        x$setInverse(inv)
+        inv
 }
